@@ -30,6 +30,8 @@ Antes de que puedan leer datos, deben configurar el puerto serie según el siste
 * Buscar puerto COM y LPT en la lista
 * Fijarse el nombre de los puertos activados (debería haber uno solo al menos que tengan otro dispositivo usb conectado)
 
+![Imagen](https://es.mathworks.com/help/supportpkg/arduinoio/ug/win_dev_mngr_port.png)
+
 ### Como detectar el nombre en MAC
 * Conectar el arduino
 * En la consola escribir 
