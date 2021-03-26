@@ -184,8 +184,9 @@ class Inicio(Widget):
     def exportCSV(self):
         ofile  = open(self.nombreArchivo, "a")
         writer = csv.writer(ofile, delimiter=',')
+        time = [i/self.sampleRate for i in range(len(self.arduino.valores))]
         for i in range(0,len(self.arduino.valores)):
-            writer.writerows(zip([self.arduino.valores[i]-self.gravedad1], [self.arduino.valores2[i]-self.gravedad2]))
+            writer.writerows(zip([time[i]] , [self.arduino.valores[i]-self.gravedad1], [self.arduino.valores2[i]-self.gravedad2]))
         print("Valores guardados en disco")
 
     
