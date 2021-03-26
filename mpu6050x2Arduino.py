@@ -78,7 +78,6 @@ class Inicio(Widget):
         if not self.conectado:
 
             # Defino parámetros para el objeto Serial
-            
             portName = '/dev/ttyACM0'
             baudRate = 115200
             dataNumBytes = 2        # number of bytes of 1 data point

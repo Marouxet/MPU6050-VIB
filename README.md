@@ -43,3 +43,23 @@ y presionar enter.
 Deberían ver únicamente una salida, al menos que haya más dispositivos conectados
 
 ![resumen](https://a.pololu-files.com/picture/0J3925.440.png)
+
+
+### Modificar código para  asignar el nombre correspondiente
+
+* En el archivo mpu6050x2Arduino.py buscar la línea de código
+
+```python 
+# Defino parámetros para el objeto Serial
+ portName = '/dev/ttyACM0'
+``` 
+
+(se encuentra dentro del método conectar en la clase Inicio)
+
+* Modificar el texto por el nombre del puerto que hayan encontrado. Ejemplo
+
+```python 
+# Defino parámetros para el objeto Serial
+ portName = 'COM3'
+``` 
+
