@@ -9,17 +9,12 @@ from kivy.uix.slider import Slider
 from kivy_garden.graph import Graph, MeshLinePlot
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
-import serial
 import numpy as np 
-import struct
 import time
-import os
 import serialMPU 
-import copy
 import csv
-import datetime
-
-
+from io import TextIOWrapper
+import os
 
 class Inicio(Widget):
 
@@ -30,7 +25,7 @@ class Inicio(Widget):
         self.sensitivity = 2048 # conversion digital a G
         self.gravedad1 = 0 #constante para restar
         self.gravedad2 = 0 #constante para restar
-        self.sampleRate = 1000 # SampleRate de Arduino
+        self.sampleRate = 500 # SampleRate de Arduino
        
         # Variables lógicas usadas 
         self.status = 0
@@ -40,7 +35,7 @@ class Inicio(Widget):
         self.textosGraficosAmplitudDinamica = []
         # Armado de app Widget con vinculo con archivo de estilo cistas.kv
         # Acomodar
-        self.t_max = 5 # Tiempo en segundos que se muestran 
+        self.t_max = 15 # Tiempo en segundos que se muestran 
         self.muestras_plot = self.t_max * self.sampleRate
 
         self.medicioncompleta1 = []
@@ -182,12 +177,26 @@ class Inicio(Widget):
         self.arduino.corregir = 1
 
     def exportCSV(self):
-        ofile  = open(self.nombreArchivo, "a")
-        writer = csv.writer(ofile, delimiter=',')
-        time = [i/self.sampleRate for i in range(len(self.arduino.valores))]
-        for i in range(0,len(self.arduino.valores)):
-            writer.writerows(zip([time[i]] , [self.arduino.valores[i]-self.gravedad1], [self.arduino.valores2[i]-self.gravedad2]))
-        print("Valores guardados en disco")
+
+
+        # Genero nombre de archivo con timestamp
+        t = time.localtime()
+        t = time.strftime('%Y%b%d-%H%M', t)
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        self.nombreArchivo = os.path.join(dir_path,"medicion-" + t + ".csv")
+
+        # Abro el csv con TextIOWrapper para hacerlom multiplataforma
+        with open(self.nombreArchivo, 'wb') as csvfile, TextIOWrapper(csvfile, encoding='utf-8', newline='') as wrapper:
+            csvwriter = csv.writer(wrapper)
+
+            # Genero vector tiempo para exportar
+            tiempo = [i / self.sampleRate for i in range(len(self.arduino.valores))]
+
+            # Escribo
+            for i in range(0,len(self.arduino.valores)):
+                csvwriter.writerows(zip([tiempo[i]], [self.arduino.valores[i]-self.gravedad1], [self.arduino.valores2[i]-self.gravedad2]))
+
+        print("Valores guardados en: "+ self.nombreArchivo)
 
     
     def modoLibre(self, dt):
