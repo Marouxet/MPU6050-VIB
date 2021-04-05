@@ -1,6 +1,4 @@
-__pycache__/
-.idea
-.idea/
-.vscode
 .vscode/
+__pycache__/
 .gitignore
+
