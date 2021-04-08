@@ -49,7 +49,7 @@ if(measure){
   acele2.getAcceleration(&ax2, &ay2, &az2);
 
   #ifdef OUTPUT_BINARY_ACELE1
-     Serial.write((uint8_t)(ax1 >> 8)); Serial.write((uint8_t)(ax1 & 0xFF));
+     Serial.write((uint8_t)(az1 >> 8)); Serial.write((uint8_t)(ax1 & 0xFF));
   #endif
 
 
