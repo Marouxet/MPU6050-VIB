@@ -14,7 +14,7 @@ ruta = os.path.join(dir_path,archivo)
 data = np.genfromtxt(ruta, delimiter=",", names=["t", "a1", "a2"])
 #
 
-fs = 1000
+fs = 500
 
 a1 = data['a1']                 # Aceleraciones acelerómetro 1
 a2 = data['a2']                 # Aceleraciones acelerómetro 2

@@ -36,7 +36,7 @@ class TransferenciaAceleracion():
             # Definición del largo de la ventana fft
             self.fftSize = max(self.fftSize,len(data['a1']),len(data['a2']))
             
-    def calcular(self,orden_filtro = 21, SampleRate = 1000, plot = False, xlim = []):    
+    def calcular(self,orden_filtro = 21, SampleRate = 500, plot = False, xlim = []):    
 
         self.transferencias = {}  
         self.frecuencia = np.fft.rfftfreq(self.fftSize, 1/SampleRate)
