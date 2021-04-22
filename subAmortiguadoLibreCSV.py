@@ -5,11 +5,11 @@ from matplotlib import gridspec
 import os
 
 # Nombre de archivo para leer
-archivo = "medicion-2021Apr04-1134.csv"
-
+archivo = "medicion-libre-maquinola copy.csv"
+MASA = 0.3 # Medición de la masa hecha aparte
 
 # Lectura de archivo multiplataforma
-dir_path = os.path.dirname(os.path.realpath(__file__))
+dir_path = os.path.dirname(os.path.realpath(__file__)) # Directorio donde está este archivo.
 ruta = os.path.join(dir_path,archivo)
 data = np.genfromtxt(ruta, delimiter=",", names=["t", "a1", "a2"])
 #
@@ -149,7 +149,7 @@ def calculo(t, data_max, t_max, data_min, t_min):
     data_sint = A * np.exp(-xi * w0 * t_sint) * np.sin(
         wd * t_sint)  # Respuesta libre sintética subamortiguada con offset
 
-    m = 0.3  # Conociendo el valor de la masa en kg.
+    m = MASA  # Conociendo el valor de la masa en kg.
     Ra = 2 * xi * m * w0  # Valor de coeficiente de amortiguación promedio de máximos y mínimos en Ns/m
     k = (w0 ** 2) * m  # Rigidez en función de la masa y pulsación natural en N/m
 
