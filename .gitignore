@@ -2,3 +2,5 @@
 __pycache__/
 .gitignore
 
+.DS_Store
+.python-version
