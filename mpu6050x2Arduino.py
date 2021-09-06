@@ -35,7 +35,7 @@ class Inicio(Widget):
         self.textosGraficosAmplitudDinamica = []
         # Armado de app Widget con vinculo con archivo de estilo cistas.kv
         # Acomodar
-        self.t_max = 15 # Tiempo en segundos que se muestran 
+        self.t_max = 8 # Tiempo en segundos que se muestran
         self.muestras_plot = self.t_max * self.sampleRate
 
         self.medicioncompleta1 = []
@@ -73,7 +73,7 @@ class Inicio(Widget):
         if not self.conectado:
 
             # Defino parámetros para el objeto Serial
-            portName = '/dev/ttyACM0'
+            portName = 'COM3'
             baudRate = 115200
             dataNumBytes = 2        # number of bytes of 1 data point
             numPlots = 2            # number of plots in 1 graph
@@ -181,7 +181,7 @@ class Inicio(Widget):
 
         # Genero nombre de archivo con timestamp
         t = time.localtime()
-        t = time.strftime('%Y%b%d-%H%M', t)
+        t = time.strftime('%Y%b%d-%H%M%S', t)
         dir_path = os.path.dirname(os.path.realpath(__file__))
         self.nombreArchivo = os.path.join(dir_path,"medicion-" + t + ".csv")
 

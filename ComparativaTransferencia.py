@@ -36,49 +36,54 @@ class TransferenciaAceleracion():
             # Definición del largo de la ventana fft
             self.fftSize = max(self.fftSize,len(data['a1']),len(data['a2']))
             
-    def calcular(self,orden_filtro = 21, SampleRate = 500, plot = False, xlim = []):    
+    def calcular(self,orden_filtro = 21, SampleRate = 500):
 
-        self.transferencias = {}  
+        global aIN_fft_dB, aOUT_fft_dB
+
+        self.nivelesIN = {}
+        self.nivelesOUT = {}
+        self.transferencias = {}
         self.frecuencia = np.fft.rfftfreq(self.fftSize, 1/SampleRate)
+
         for medicion in range (len (self.leyendas)):
             
             aIN_fft_dB = savgol_filter(10*np.log10(abs(np.fft.rfft(self.aIN[medicion],self.fftSize))),orden_filtro,1)
             aOUT_fft_dB = savgol_filter(10*np.log10(abs(np.fft.rfft(self.aOUT[medicion],self.fftSize))),orden_filtro,1)
 
-            if plot:
-                plt.plot(self.frecuencia,aOUT_fft_dB)
-                
-                if len(xlim)>0:
-                    plt.xlim(xlim)
-                plt.grid()
-                plt.xlabel("Frecuencia [Hz]")
-                plt.ylabel("FFT Aceleracion Parlante[dB]")
-                plt.show()
-
-                plt.plot(self.frecuencia,aIN_fft_dB)
-                if len(xlim)>0:
-                    plt.xlim(xlim)
-                plt.grid()
-                plt.xlabel("Frecuencia [Hz]")
-                plt.ylabel("FFT Aceleracion Antivibratorio[dB]")
-                plt.show()
-
-            self.transferencias.update({self.leyendas[medicion]:aIN_fft_dB-aOUT_fft_dB})
-
-        
+            self.nivelesIN.update({self.leyendas[medicion]: aIN_fft_dB})
+            self.nivelesOUT.update({self.leyendas[medicion]: aOUT_fft_dB})
+            self.transferencias.update({self.leyendas[medicion]: aIN_fft_dB-aOUT_fft_dB})
        
-    def graficar(self, xlim = []):
-        plt.figure()
-        for medicion in self.transferencias.keys():
-            plt.plot(self.frecuencia,self.transferencias[medicion], label = medicion)
-        
-        
-        plt.xlabel("Frecuencia [Hz]")
-        plt.ylabel("Transmisibilidad [dB]")
-        
-        if len(xlim)>0:
-            plt.xlim(xlim)
-        plt.legend()
-        plt.grid()
-        plt.show()
+    def graficar(self,xlim, plot = True):
 
+        if plot:
+
+            fig, axs = plt.subplots(2, 2)
+
+
+            for medicion in self.transferencias.keys():
+                axs[0,0].plot(self.frecuencia,self.nivelesIN[medicion], 'tab:green')
+                axs[0,0].set_title('Acelerómetro 1 [IN]')
+                axs[0,0].set(ylabel = 'Amplitud [dB]')
+                axs[0,0].grid()
+
+                axs[0,1].plot(self.frecuencia,self.nivelesOUT[medicion],'tab:orange')
+                axs[0,1].set_title('Acelerómetro 2 [OUT]')
+                axs[0,1].set(ylabel='Amplitud [dB]')
+                axs[0,1].grid()
+
+                axs[1,0].plot(self.frecuencia, self.nivelesIN[medicion], 'tab:green')
+                axs[1,0].plot(self.frecuencia, self.nivelesOUT[medicion], 'tab:orange')
+                axs[1,0].set(xlabel='Frecuencia [Hz]', ylabel='Amplitud [dB]')
+                axs[1,0].set_title('Ambos Acelerómetros')
+                # axs[1,0].label_outer()
+                axs[1,0].grid()
+
+                axs[1,1].plot(self.frecuencia, self.transferencias[medicion])
+                axs[1,1].set(xlabel='Frecuencia [Hz]', ylabel='Transmisibilidad [dB]')
+                axs[1,1].set_title('Transmisibilidad')
+                axs[1,1].grid()
+
+
+
+        plt.show()

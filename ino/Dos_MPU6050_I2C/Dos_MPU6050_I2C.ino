@@ -32,6 +32,7 @@ void setup() {
   acele2.initialize();
 
   Serial.println(acele1.testConnection() ? "_OK_" : "MPU1 FAILED");      //Verificación de conexiones
+  Serial.println(acele2.testConnection() ? "_OK_" : "MPU2 FAILED");  
   acele1.setXAccelOffset(1596);
   acele2.setXAccelOffset(1596);
 
@@ -49,8 +50,8 @@ if(measure){
   acele2.getAcceleration(&ax2, &ay2, &az2);
 
   #ifdef OUTPUT_BINARY_ACELE1
-     Serial.write((uint8_t)(az1 >> 8)); 
-     Serial.write((uint8_t)(az1 & 0xFF));
+     Serial.write((uint8_t)(-az1 >> 8)); 
+     Serial.write((uint8_t)(-az1 & 0xFF));
   #endif
 
 
